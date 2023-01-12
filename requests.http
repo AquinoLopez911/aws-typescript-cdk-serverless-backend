@@ -1,0 +1,4 @@
+@endpoint = https://mdr6herpra.execute-api.us-east-1.amazonaws.com/prod
+
+GET {{endpoint}}/hola
+###
