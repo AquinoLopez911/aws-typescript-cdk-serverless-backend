@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { LniServerlessBackendCdkStack } from '../lib/lni-serverless-backend-cdk-stack';
+import { LniServerlessBackendCdkStack } from '../infrastructure/lni-serverless-backend-cdk-stack';
 
 const app = new cdk.App();
 new LniServerlessBackendCdkStack(app, 'LniServerlessBackendCdkStack', {
