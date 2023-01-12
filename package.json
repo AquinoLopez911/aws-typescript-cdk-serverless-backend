@@ -10,6 +10,10 @@
     "test": "jest",
     "cdk": "cdk"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AquinoLopez911/aws-typescript-cdk-serverless-backend.git"
+  },
   "devDependencies": {
     "@types/jest": "^29.2.5",
     "@types/node": "18.11.18",
