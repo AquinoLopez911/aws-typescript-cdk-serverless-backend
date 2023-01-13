@@ -1,4 +1,13 @@
-@endpoint = https://mdr6herpra.execute-api.us-east-1.amazonaws.com/prod
+@endpoint = https://0dexd9c19b.execute-api.us-east-1.amazonaws.com/prod/
 
-GET {{endpoint}}/hola
+GET {{endpoint}}/hola/
+###
+
+POST {{endpoint}}/spaces/
+Content-Type: application/json
+
+{
+    "location": "Arlington",
+    "name": "Bar Bao"
+}
 ###
