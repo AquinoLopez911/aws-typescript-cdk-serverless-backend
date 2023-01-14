@@ -13,7 +13,8 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
   private spacesTable = new GenericTable(this, {
     tableName: 'SpacesTable',
     primaryKey: 'spaceId',
-    createLambdaPath: 'Create'
+    createLambdaPath: 'Create',
+    readLambdaPath: 'Read'
   }) 
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -41,6 +42,8 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
 
     //spaces api integrations:
     const spaceResouce = this.api.root.addResource('spaces');
+
     spaceResouce.addMethod('POST', this.spacesTable.createLambdaIntegration);
+    spaceResouce.addMethod('GET', this.spacesTable.readLambdaIntegration);
   }
 }

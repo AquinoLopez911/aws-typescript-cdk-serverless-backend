@@ -7,7 +7,8 @@ import { join } from "path";
 export interface TableProps {
     tableName: string,
     primaryKey: string,
-    createLambdaPath?: string,
+    //path = file
+    createLambdaPath?: string, 
     readLambdaPath?: string,
     updateLambdaPath?: string,
     deleteLambdaPath?: string,
