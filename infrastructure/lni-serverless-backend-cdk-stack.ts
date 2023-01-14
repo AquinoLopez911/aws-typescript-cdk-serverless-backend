@@ -14,7 +14,8 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
     tableName: 'SpacesTable',
     primaryKey: 'spaceId',
     createLambdaPath: 'Create',
-    readLambdaPath: 'Read'
+    readLambdaPath: 'Read',
+    secondaryIndexes: ['location']
   }) 
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

@@ -13,6 +13,8 @@ export interface TableProps {
     updateLambdaPath?: string,
     deleteLambdaPath?: string,
 
+    secondaryIndexes?: string[]
+
 }
 
 export class GenericTable {
