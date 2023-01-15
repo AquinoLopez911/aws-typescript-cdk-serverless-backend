@@ -41,9 +41,11 @@ export class GenericTable {
 
     private initialize() {
         this.createTable();
+        this.addSecondaryIndexes()
         this.createLambdas();
         this.grantTableRights();
     }
+
 
     private createTable() {
       this.table = new Table(this.stack, this.props.tableName, {
@@ -53,6 +55,20 @@ export class GenericTable {
             },
             tableName: this.props.tableName
         })
+    }
+
+    private addSecondaryIndexes(){
+        if (this.props.secondaryIndexes) {
+            for (const secondaryIndex of this.props.secondaryIndexes) {
+                this.table.addGlobalSecondaryIndex({
+                    indexName: secondaryIndex,
+                    partitionKey: {
+                        name: secondaryIndex,
+                        type: AttributeType.STRING
+                    }
+                })
+            }
+        }
     }
 
     private createLambdas() {
