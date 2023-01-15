@@ -41,6 +41,7 @@ const getLocationWithSecondaryPartition = async (queryParams: APIGatewayProxyEve
     const queryValue = queryParams[queryKey];
     const queryResponse = await dbClient.query({
         TableName: TABLE_NAME!,
+        IndexName: queryKey,
         KeyConditionExpression: '#zz = :zzzz',
         ExpressionAttributeNames: {
             '#zz': queryKey!
