@@ -1,11 +1,19 @@
 @endpoint = https://0dexd9c19b.execute-api.us-east-1.amazonaws.com/prod/
 
+//get all 
 GET {{endpoint}}/hola/
 ###
 
+// get one by id 
 GET {{endpoint}}/spaces/?spaceId=c0ae2d09-0e4d-40a0-bcee-dc8fd289a550
 ###
 
+// get all with secondary indexes of value ...
+// secondary indexes options [locatioin, ]
+GET {{endpoint}}/spaces?location=gateway
+###
+
+//create one
 POST {{endpoint}}/spaces/
 Content-Type: application/json
 
@@ -14,3 +22,5 @@ Content-Type: application/json
     "name": "Bar Bao"
 }
 ###
+
+
