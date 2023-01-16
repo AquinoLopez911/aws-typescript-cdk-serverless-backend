@@ -23,4 +23,12 @@ Content-Type: application/json
 }
 ###
 
+// update one by id 
+PUT {{endpoint}}/spaces/?spaceId=c0ae2d09-0e4d-40a0-bcee-dc8fd289a550
+Content-Type: application/json
 
+{
+    "location": "Washington D.c",
+    "name": "Bar Chinois"
+}
+###
