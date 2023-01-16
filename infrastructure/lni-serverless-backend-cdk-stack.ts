@@ -15,6 +15,8 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
     primaryKey: 'spaceId',
     createLambdaPath: 'Create',
     readLambdaPath: 'Read',
+    updateLambdaPath: 'Update',
+    deleteLambdaPath: 'Delete',
     secondaryIndexes: ['location']
   }) 
 
@@ -46,5 +48,7 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
 
     spaceResouce.addMethod('POST', this.spacesTable.createLambdaIntegration);
     spaceResouce.addMethod('GET', this.spacesTable.readLambdaIntegration);
+    spaceResouce.addMethod('PUT', this.spacesTable.updateLambdaIntegration);
+    spaceResouce.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration);
   }
 }
