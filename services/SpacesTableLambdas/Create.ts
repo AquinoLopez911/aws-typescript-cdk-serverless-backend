@@ -7,15 +7,18 @@ const TABLE_NAME = process.env.TABLE_NAME
 const dbClient = new DynamoDB.DocumentClient();
 
 const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult>  => {
-    console.log(JSON.stringify(`Event: event`))
 
     let item = typeof event.body == 'object' ? event.body: JSON.parse(event.body);
-    console.log(item);
+
     item.spaceId = v4();
-    console.log(item);
 
     const result: APIGatewayProxyResult = {
         statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Access-Control-Allow-Origin, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+            // "Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
+        },
         body: ""
     }
     

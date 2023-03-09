@@ -82,11 +82,11 @@ export class GenericTable {
         }
         if( this.props.updateLambdaPath) {
             this.updateLambda = this.createSingleLambda(this.props.updateLambdaPath);
-            this.createLambdaIntegration = new LambdaIntegration(this.updateLambda);
+            this.updateLambdaIntegration = new LambdaIntegration(this.updateLambda);
         }
         if( this.props.deleteLambdaPath) {
             this.deleteLambda = this.createSingleLambda(this.props.deleteLambdaPath);
-            this.createLambdaIntegration = new LambdaIntegration(this.deleteLambda);
+            this.deleteLambdaIntegration = new LambdaIntegration(this.deleteLambda);
         }
     }
 
