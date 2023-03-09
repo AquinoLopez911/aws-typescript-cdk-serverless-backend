@@ -2,7 +2,7 @@ import { handler } from '../../services/SpacesTableLambdas/Create'
 
 const event = {
     body: {
-        location: 'Washington D.C'
+        location: 'your mom'
     }
 }
 
