@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../services/SpacesTableLambdas/Read'
+import { handler } from '../../services/LniTableLambdas/Read'
 
 // // getOneWithPrimaryKey
 const event: APIGatewayProxyEvent = {

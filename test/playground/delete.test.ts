@@ -1,4 +1,4 @@
-import { handler } from '../../services/SpacesTableLambdas/Delete'
+import { handler } from '../../services/LniTableLambdas/Delete'
 // // getOneWithPrimaryKey
 const event = {
     queryStringParameters: {

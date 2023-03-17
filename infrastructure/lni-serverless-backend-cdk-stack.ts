@@ -22,14 +22,14 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
   private suffix: string;
   private spacesPhotosBucket: Bucket;
 
-  private spacesTable = new GenericTable(this, {
-    tableName: 'SpacesTable',
-    primaryKey: 'spaceId',
+  private lniTable = new GenericTable(this, {
+    tableName: 'LniTable',
+    primaryKey: 'PK',
+    sortKey: 'SK',
     createLambdaPath: 'Create',
     readLambdaPath: 'Read',
     updateLambdaPath: 'Update',
-    deleteLambdaPath: 'Delete',
-    secondaryIndexes: ['location']
+    deleteLambdaPath: 'Delete'
   }) 
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -67,11 +67,11 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
     helloLambdaNodeJsResource.addMethod('GET', helloLambdaNodeJsIntegration, optionsWithAuthorizer)
 
     //spaces api integrations:
-    const spaceResouce = this.api.root.addResource('spaces');
-    spaceResouce.addMethod('POST', this.spacesTable.createLambdaIntegration);
-    spaceResouce.addMethod('GET', this.spacesTable.readLambdaIntegration);
-    spaceResouce.addMethod('PUT', this.spacesTable.updateLambdaIntegration);
-    spaceResouce.addMethod('DELETE', this.spacesTable.deleteLambdaIntegration);
+    const ClientResource = this.api.root.addResource('lni');
+    ClientResource.addMethod('POST', this.lniTable.createLambdaIntegration);
+    ClientResource.addMethod('GET', this.lniTable.readLambdaIntegration);
+    ClientResource.addMethod('PUT', this.lniTable.updateLambdaIntegration);
+    ClientResource.addMethod('DELETE', this.lniTable.deleteLambdaIntegration);
   }
 
   private initializeSuffix(){

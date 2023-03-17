@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../services/SpacesTableLambdas/Update'
+import { handler } from '../../services/LniTableLambdas/Update'
 
 const event: APIGatewayProxyEvent = {
     queryStringParameters: {
