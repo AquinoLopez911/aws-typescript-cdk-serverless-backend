@@ -3,14 +3,20 @@ import { DynamoDB } from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import { v4 } from 'uuid';
 
-const TABLE_NAME = process.env.TABLE_NAME
+const TABLE_NAME = 'LniTable'
 const dbClient = new DynamoDB.DocumentClient();
 
 const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult>  => {
 
+    
     let item = typeof event.body == 'object' ? event.body: JSON.parse(event.body);
 
-    item.spaceId = v4();
+    let clientItem = {
+        PK: `Client#${item.buisnessName}`,
+        SK: `Client#${item.buisnessName}`,
+        number: `${item.buisnessContactNumber}`,
+        email: `${item.buisnessEmail}`
+    }    
 
     const result: APIGatewayProxyResult = {
         statusCode: 200,
@@ -25,7 +31,7 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
     try {
         await dbClient.put({
             TableName: TABLE_NAME!,
-            Item: item
+            Item: clientItem
         }).promise()
     } catch (error: any) {
         console.log(typeof(error))
@@ -34,8 +40,8 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
         return result;
     }
     console.log(JSON.stringify(item))
-    console.log(`created new item with id: ${item.spaceId}`)
-    result.body = JSON.stringify(`created new item with id: ${item.spaceId}`);
+    console.log(`created new item with id: ${item.PK} ${item.SK}`)
+    result.body = JSON.stringify(`created new item with id: ${item.PK} ${item.SK}`);
     return result;
 }
 

@@ -1,8 +1,10 @@
-import { handler } from '../../services/SpacesTableLambdas/Create'
+import { handler } from '../../services/LniTableLambdas/Create'
 
 const event = {
     body: {
-        location: 'your mom'
+        buisnessName: "Bar Bao",
+        buisnessContactNumber: "7038271823",
+        buisnessEmail: "BarBao@gmail.com"
     }
 }
 
