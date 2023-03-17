@@ -6,15 +6,15 @@ import { join } from "path";
 
 export interface TableProps {
     tableName: string,
+
     primaryKey: string,
-    //path = file
+    sortKey?: string,
+    secondaryIndexes?: string[],
+
     createLambdaPath?: string, 
     readLambdaPath?: string,
     updateLambdaPath?: string,
     deleteLambdaPath?: string,
-
-    secondaryIndexes?: string[]
-
 }
 
 export class GenericTable {
@@ -48,12 +48,32 @@ export class GenericTable {
 
 
     private createTable() {
+        let key;
+
+        if (this.props.sortKey) {
+            key = {
+                partitionKey: {
+                    name: this.props.primaryKey,
+                    type: AttributeType.STRING
+                },
+                sortKey: {
+                    name: this.props.sortKey ,
+                    type: AttributeType.STRING
+                }
+            }
+        }
+        else {
+            key = {
+                partitionKey: {
+                    name: this.props.primaryKey,
+                    type: AttributeType.STRING
+                }
+            }
+        }
+
       this.table = new Table(this.stack, this.props.tableName, {
-            partitionKey: {
-                name: this.props.primaryKey,
-                type: AttributeType.STRING
-            },
-            tableName: this.props.tableName
+            tableName: this.props.tableName,
+           ...key
         })
     }
 
