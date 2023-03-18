@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.1.4",
-    "@aws-cdk/asset-awscli-v1": "^2.2.52",
+    "@aws-cdk/asset-awscli-v1": "^2.2.108",
     "@types/aws-lambda": "^8.10.109",
     "@types/uuid": "^9.0.0",
     "aws-amplify": "^5.0.10",

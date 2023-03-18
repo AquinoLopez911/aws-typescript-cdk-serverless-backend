@@ -11,11 +11,19 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
     
     let item = typeof event.body == 'object' ? event.body: JSON.parse(event.body);
 
-    let clientItem = {
+    const dbItem = item.type == "Client" ?  {
         PK: `Client#${item.buisnessName}`,
-        SK: `Client#${item.buisnessName}`,
+        SK: `${item.type}#${item.buisnessName}`,
         number: `${item.buisnessContactNumber}`,
         email: `${item.buisnessEmail}`
+    } : {
+        PK: `Client#${item.client}`,
+        SK: `${item.type}#${item.client}`,
+        details: {
+            ice: `${item.iceQuantity}`,
+            propane: `${item.propane}`
+        },
+        date: JSON.stringify(new Date())
     }    
 
     const result: APIGatewayProxyResult = {
@@ -31,7 +39,7 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
     try {
         await dbClient.put({
             TableName: TABLE_NAME!,
-            Item: clientItem
+            Item: dbItem
         }).promise()
     } catch (error: any) {
         console.log(typeof(error))
@@ -40,8 +48,8 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
         return result;
     }
     console.log(JSON.stringify(item))
-    console.log(`created new item with id: ${item.PK} ${item.SK}`)
-    result.body = JSON.stringify(`created new item with id: ${item.PK} ${item.SK}`);
+    console.log(`created a new ${item.type}: ${dbItem.PK} ${dbItem.SK}`)
+    result.body = JSON.stringify(`created a new ${item.type}: ${dbItem.PK} ${dbItem.SK}`);
     return result;
 }
 
