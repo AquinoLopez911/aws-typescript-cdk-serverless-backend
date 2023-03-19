@@ -2,8 +2,8 @@
 import { DynamoDB } from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyEventQueryStringParameters, APIGatewayProxyResult, Context } from 'aws-lambda';
 
-const TABLE_NAME = process.env.TABLE_NAME;
-const PRIMARY_KEY = process.env.PRIMARY_KEY;
+const TABLE_NAME = "LniTable";
+const PRIMARY_KEY = "PK";
 const dbClient = new DynamoDB.DocumentClient();
 
 // function gets one Location if there is an event.queryStringParameter with the PRIMARY_KEY as a key
@@ -18,7 +18,10 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
     try {
         if(event.queryStringParameters) {
             if(PRIMARY_KEY! in event.queryStringParameters) {
-                result.body = await getLocationWithPrimaryKey(event.queryStringParameters)
+                let formattedPK = `Client#${event.queryStringParameters.PK}`
+
+                event.queryStringParameters.PK = formattedPK
+                result.body = await getAllOrderForSingleClientWithPrimaryKeyAndSortKey(event.queryStringParameters)
             }
             else {
                 result.body = await getLocationWithSecondaryPartition(event.queryStringParameters)
@@ -53,16 +56,20 @@ const getLocationWithSecondaryPartition = async (queryParams: APIGatewayProxyEve
     return JSON.stringify(queryResponse)
 }
 
-const getLocationWithPrimaryKey = async (queryParams: APIGatewayProxyEventQueryStringParameters) => {
+const getAllOrderForSingleClientWithPrimaryKeyAndSortKey = async (queryParams: APIGatewayProxyEventQueryStringParameters) => {
     const keyValue = queryParams[PRIMARY_KEY!];
+    const sKeyValue = queryParams["SK"];
     const queryResponse = await dbClient.query({
         TableName: TABLE_NAME!,
-        KeyConditionExpression: '#zz = :zzzz',
+        KeyConditionExpression: '#PK = :client AND begins_with(#SK, :order)',
         ExpressionAttributeNames: {
-            '#zz': PRIMARY_KEY!
+            '#PK': PRIMARY_KEY!,
+            '#SK': "SK"
         },
         ExpressionAttributeValues: {
-            ':zzzz': keyValue
+            ':client': keyValue,
+            ':order': sKeyValue
+
         }
     }).promise()
     return JSON.stringify(queryResponse)
