@@ -9,7 +9,7 @@ export interface TableProps {
 
     primaryKey: string,
     sortKey?: string,
-    secondaryIndexes?: string[],
+    globalSecondaryIndexes?: string[],
 
     createLambdaPath?: string, 
     readLambdaPath?: string,
@@ -78,10 +78,10 @@ export class GenericTable {
     }
 
     private addSecondaryIndexes(){
-        if (this.props.secondaryIndexes) {
-            for (const secondaryIndex of this.props.secondaryIndexes) {
+        if (this.props.globalSecondaryIndexes) {
+            for (const secondaryIndex of this.props.globalSecondaryIndexes) {
                 this.table.addGlobalSecondaryIndex({
-                    indexName: secondaryIndex,
+                    indexName: "Orders",
                     partitionKey: {
                         name: secondaryIndex,
                         type: AttributeType.STRING

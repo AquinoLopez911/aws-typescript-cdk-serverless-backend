@@ -14,7 +14,8 @@ export class LniServerlessBackendCdkStack extends cdk.Stack {
   private api: RestApi = new RestApi(this, "lniApi", {
     defaultCorsPreflightOptions: {
       allowOrigins: ["*"],
-      allowHeaders: ["Access-Control-Allow-Origin, Access-Control-Allow-Methods, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"]
+      allowHeaders: [
+        "Access-Control-Allow-Origin, Access-Control-Allow-Methods, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"]
     },
 
   })
