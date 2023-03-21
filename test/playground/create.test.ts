@@ -2,17 +2,20 @@ import { handler } from '../../services/LniTableLambdas/Create'
 
 const clientEvent = {
     body: {
-        buisnessName: "bar live",
-        buisnessContactNumber: "7038561542",
-        buisnessEmail: "barlive@barlive.com",
+        buisnessName: "Farmers And Distillers",
+        buisnessContactNumber: "2024643001",
+        buisnessEmail: "manager@F&D.com",
+        city: 'Washington D.C.',
+        // state: 'VA',
+        address: '600 Massachusetts Ave NW',
         type: "Client"
     }
 }
 
 const orderEvent = {
     body: {
-        client: "Casta Rum Bar",
-        iceQuantity: 21,
+        client: "Cleradon Ballroom",
+        iceQuantity: 14,
         propane: 0,
         type: "Order"
     }

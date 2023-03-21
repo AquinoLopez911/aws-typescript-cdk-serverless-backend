@@ -13,7 +13,7 @@ GET {{endpoint}}/spaces/?spaceId=c0ae2d09-0e4d-40a0-bcee-dc8fd289a550
 
 // get all with secondary indexes of value ...
 // secondary indexes options [locatioin, ]
-GET {{endpoint}}/spaces?location=gateway
+GET {{endpoint}}/lni/?PK=Order
 ###
 
 //create one

@@ -7,23 +7,50 @@ const TABLE_NAME = 'LniTable'
 const dbClient = new DynamoDB.DocumentClient();
 
 const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult>  => {
+    // helper function to format date strings
+    function formatDate(date: Date) {
+        const year = date.getFullYear();
+        let month = '' + (date.getMonth() + 1);
+        let day = '' + (date.getDate());
+        let hour = '' + date.getHours();
+        let minute = '' + date.getMinutes();
+      
+        if (month.length < 2) {
+          month = '0' + month;
+        }
+        if (day.length < 2) {
+          day = '0' + day;
+        }
+        if (hour.length < 2) {
+          hour = '0' + hour;
+        }
+        if (minute.length < 2) {
+          minute = '0' + minute;
+        }
+      
+        const formattedDate = [year, month, day].join('-');
+        const militaryTime = [hour, minute].join(':');
+      
+        return `${formattedDate} ${militaryTime}`;
+      }
 
     
     let item = typeof event.body == 'object' ? event.body: JSON.parse(event.body);
 
     const dbItem = item.type == "Client" ?  {
-        PK: `Client#${item.buisnessName}`,
-        SK: `${item.type}#${item.buisnessName}`,
+        PK: `Client`,
+        SK: item.state ? `${item.address}-${item.city}-${item.state}` : `${item.address}-${item.city}`,
+        client: `${item.buisnessName}`,
         number: `${item.buisnessContactNumber}`,
         email: `${item.buisnessEmail}`
     } : {
-        PK: `Client#${item.client}`,
-        SK: `${item.type}#${item.client}`,
+        PK: `Order`,
+        SK: JSON.stringify(formatDate(new Date())),
         details: {
-            ice: `${item.iceQuantity}`,
-            propane: `${item.propane}`
+            ice: item.iceQuantity,
+            propane: item.propane
         },
-        date: JSON.stringify(new Date())
+        client: `${item.client}`
     }    
 
     const result: APIGatewayProxyResult = {
