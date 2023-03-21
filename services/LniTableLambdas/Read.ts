@@ -12,16 +12,24 @@ const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<A
 
     const result: APIGatewayProxyResult = {
         statusCode: 200,
-        body: ""
+        body: "",
+        headers: {
+            "Access-Control-Allow-Origin": '*'
+        }
     }
     
     try {
         if(event.queryStringParameters) {
             if(PRIMARY_KEY! in event.queryStringParameters) {
-                let formattedPK = `Client#${event.queryStringParameters.PK}`
+                if(event.queryStringParameters.PK === "Order"){
+                    result.body = await getAllOrdersWithPrimaryKey(event.queryStringParameters)
+                    return result;
+                }
+                if(event.queryStringParameters.PK === "Client"){
+                    result.body = await getAllClientsWithPrimaryKey(event.queryStringParameters)
+                    return result;
+                }
 
-                event.queryStringParameters.PK = formattedPK
-                result.body = await getAllOrderForSingleClientWithPrimaryKeyAndSortKey(event.queryStringParameters)
             }
             else {
                 result.body = await getLocationWithSecondaryPartition(event.queryStringParameters)
@@ -44,7 +52,7 @@ const getLocationWithSecondaryPartition = async (queryParams: APIGatewayProxyEve
     const queryValue = queryParams[queryKey];
     const queryResponse = await dbClient.query({
         TableName: TABLE_NAME!,
-        IndexName: queryKey,
+        IndexName: "Orders",
         KeyConditionExpression: '#zz = :zzzz',
         ExpressionAttributeNames: {
             '#zz': queryKey!
@@ -56,19 +64,33 @@ const getLocationWithSecondaryPartition = async (queryParams: APIGatewayProxyEve
     return JSON.stringify(queryResponse)
 }
 
-const getAllOrderForSingleClientWithPrimaryKeyAndSortKey = async (queryParams: APIGatewayProxyEventQueryStringParameters) => {
+const getAllClientsWithPrimaryKey = async (queryParams: APIGatewayProxyEventQueryStringParameters) => {
+    const keyValue = queryParams[PRIMARY_KEY!];
+
+    const queryResponse = await dbClient.query({
+        TableName: TABLE_NAME!,
+        KeyConditionExpression: '#PK = :client ',
+        ExpressionAttributeNames: {
+            '#PK': PRIMARY_KEY!,
+        },
+        ExpressionAttributeValues: {
+            ':client': keyValue,
+        }
+    }).promise()
+    return JSON.stringify(queryResponse)
+}
+
+const getAllOrdersWithPrimaryKey = async (queryParams: APIGatewayProxyEventQueryStringParameters) => {
     const keyValue = queryParams[PRIMARY_KEY!];
     const sKeyValue = queryParams["SK"];
     const queryResponse = await dbClient.query({
         TableName: TABLE_NAME!,
-        KeyConditionExpression: '#PK = :client AND begins_with(#SK, :order)',
+        KeyConditionExpression: '#PK = :order ',
         ExpressionAttributeNames: {
             '#PK': PRIMARY_KEY!,
-            '#SK': "SK"
         },
         ExpressionAttributeValues: {
-            ':client': keyValue,
-            ':order': sKeyValue
+            ':order': keyValue,
 
         }
     }).promise()

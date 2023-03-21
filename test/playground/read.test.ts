@@ -1,28 +1,50 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { handler } from '../../services/LniTableLambdas/Read'
 
-// // getOneWithPrimaryKey
-const event: APIGatewayProxyEvent = {
+// // // getOneWithPrimaryKey
+// const singleClientOrdersEvent: APIGatewayProxyEvent = {
+//     queryStringParameters: {
+//         PK: "Bar Bao",
+//         SK: "Order#"
+//     }
+// } as any
+
+// const res = handler(singleClientOrdersEvent, {} as any).then(apiRes => {
+//     const items = JSON.parse(apiRes.body);
+//     console.log(items)
+// } );
+
+// -------------------------------------------------------->
+
+const allOrdersEvent: APIGatewayProxyEvent = {
     queryStringParameters: {
-        PK: "Bar Bao",
-        SK: "Order#"
+        PK: "Order",
     }
 } as any
 
-const res = handler(event, {} as any).then(apiRes => {
+const allClientsEvent: APIGatewayProxyEvent = {
+    queryStringParameters: {
+        PK: "Client",
+    }
+} as any
+
+const res1 = handler(allClientsEvent, {} as any).then(apiRes => {
     const items = JSON.parse(apiRes.body);
     console.log(items)
 } );
 
+// -------------------------------------------------------->
+
 
 //getAllWithSecondaryKey
-// const event2: APIGatewayProxyEvent = {
+// const allOrdersEvent: APIGatewayProxyEvent = {
 //     queryStringParameters: {
-//         location: "gateway"
+//         // PK: "Client#",
+//         SK: "Order"
 //     }
 // } as any
 
-// const res2 = handler(event2, {} as any).then(apiRes => {
+// const res2 = handler(allOrdersEvent, {} as any).then(apiRes => {
 //     console.log(apiRes)
 //     const items = JSON.parse(apiRes.body);
 //     console.log(items)
